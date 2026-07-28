@@ -19,7 +19,7 @@ public record RegistrationRequestDTO(
 
     @Schema(description = "비밀번호 확인", examples = "qwer1234", nullable = false, requiredMode = Schema.RequiredMode.REQUIRED)
     @NotBlank(message = "비밀번호 체크는 필수 항목입니다.")
-    String confirmPassword,
+    String passwordChk,
 
     @Schema(description = "닉네임", examples = "test", nullable = false, requiredMode = Schema.RequiredMode.REQUIRED)
     @NotBlank(message = "닉네임은 필수 항목입니다.")
@@ -32,9 +32,9 @@ public record RegistrationRequestDTO(
 ) {
     @AssertTrue(message = "비밀번호와 비밀번호 확인이 일치하지 않습니다.")
     public boolean isConfirmPassword() {
-        if(StringUtils.isEmpty(this.password) || StringUtils.isEmpty(this.confirmPassword)) {
+        if(StringUtils.isEmpty(this.password) || StringUtils.isEmpty(this.passwordChk)) {
             return false;
         }
-        return this.password.equals(this.confirmPassword);
+        return this.password.equals(this.passwordChk);
     }
 }
