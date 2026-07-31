@@ -78,6 +78,7 @@ public class KakaoOAuth2Service implements OAuth2UserService<OAuth2UserRequest, 
         User user = new User();
         user.setEmail(email);
         user.setPassword(passwordEncoder.encode(UUID.randomUUID().toString())); // 소셜로그인 유저는 비밀번호가 필요없다. 일반회원가입과 같이 있는 Meerketgram은 임의의 패스원드 넣음.
+        user.setProvider(ProviderPolicy.KAKAO);
         user.setNick(nickname);
         user.setProfile(profile != null ? profile : "");
         return authRepository.save(user);

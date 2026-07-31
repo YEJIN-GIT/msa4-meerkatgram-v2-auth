@@ -7,9 +7,9 @@ import com.msa4meerkatgramv2auth.domain.auth.response.AuthResponseDTO;
 import com.msa4meerkatgramv2auth.domain.user.entity.User;
 import com.msa4meerkatgramv2auth.global.config.jpa.JPAWithDeleted;
 import com.msa4meerkatgramv2auth.global.cookie.CookieManager;
-import com.msa4meerkatgramv2auth.global.error.custom.DuplicatedRecordException;
-import com.msa4meerkatgramv2auth.global.error.custom.InvalidTokenException;
-import com.msa4meerkatgramv2auth.global.error.custom.NotRegisteredException;
+import com.msa4meerkatgramv2auth.global.error.custom.business.DuplicatedResourceException;
+import com.msa4meerkatgramv2auth.global.error.custom.business.InvalidTokenException;
+import com.msa4meerkatgramv2auth.global.error.custom.business.NotRegisteredException;
 import com.msa4meerkatgramv2auth.global.jwt.JwtProvider;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -99,12 +99,12 @@ public class AuthService {
     @Transactional(rollbackFor = Exception.class)
     public void registration(RegistrationRequestDTO registrationRequestDTO) {
         // authRepository.findByEmail(registrationRequestDTO.email())
-        //    .ifPresent(user -> { throw new DuplicatedRecordException("이미 가입된 이메일입니다."); });
+        //    .ifPresent(user -> { throw new DuplicatedResourceException("이미 가입된 이메일입니다."); });
 
         // 엔티티에 @SQLRestriction("deleted_at IS NULL") 때문에 회원탈퇴한 건 제외되어 넘어가는 문제! 때문에
         // AOP적용하여 @JPAWithDeleted 어노테이션을 만들어 소프트딜리트 적용하지 않도록 한다
         if(authRepository.existsByEmail(registrationRequestDTO.email())) {
-            throw new DuplicatedRecordException("이미 가입된 이메일입니다.");
+            throw new DuplicatedResourceException("이미 가입된 이메일입니다.");
         }
 
         User user = new User();
