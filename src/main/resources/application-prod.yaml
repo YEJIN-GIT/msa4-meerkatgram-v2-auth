@@ -7,8 +7,8 @@ spring:
     version: v1
   web:
     error:
-      include-stacktrace: always
-      include-message: always
+      include-stacktrace: never
+      include-message: never
 
   servlet:
     multipart:
@@ -28,17 +28,20 @@ spring:
   # JPA
   jpa:
     hibernate:
-      ddl-auto: update
-    show-sql: true
+      # 운영환경에서 none 테이블을 자동으로 생성하 안함. 또는 update 로 설정하여 새 컬럼이나 새 테이블 자동 생성
+      ddl-auto: none
+      # JPA실행 쿼리 콘솔에 안찜음.
+    show-sql: false
     properties:
       hibernate:
-        format_sql: true
+        format_sql: false
         default_batch_fetch_size: 100
     defer-datasource-initialization: true
   sql:
     init:
       data-locations: classpath*:dummy/*.sql
-      mode: always
+      # 운영환경에서 never 설정하여 데이티베이스 초기화 SQL스크립트를 실행하지 않아 데이터 유지
+      mode: never
       platform: all
 
   # Security & OAuth2
@@ -91,8 +94,8 @@ logging:
   file:
     name: logs/error.log
   level:
-    root: info
-    com.msa4meerkatgramv2auth: debug
+    root: warn
+    com.msa4meerkatgramv2auth: error
 
 # JWT
 jwt:
